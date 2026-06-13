@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
+  const [date, setDate] = useState("");
 
   const apiKey = "2c19d92e2881dc468832c12b4705b666";
-  // const api_Key = "2c19d92e2881dc468832c12b4705b666";
   
   useEffect(()=>{
     if(navigator.geolocation){
@@ -24,6 +24,18 @@ function App() {
     }
   }, []);
 
+  // Date
+  useEffect(()=>{
+           const dt= new Date();
+           const d=dt.toLocaleDateString("en-US",{
+            weekday:"short",
+           });
+           const m= dt.getMonth()+1;
+           const y= dt.getFullYear();
+           const fd=`${d}-${m}-${y}`;
+           setDate(fd);
+  },[])
+
   const fetchWeather = async () => {
     try {
       const response = await axios.get(
@@ -36,6 +48,8 @@ function App() {
     } catch (err) {
       console.log(err);
     }
+
+    const date= new Date();
   };
 
   return (
@@ -61,7 +75,9 @@ function App() {
             Search
           </button>
         </div>
-
+        <p className="text-center mb-4 text-lg">
+        {date}
+        </p>
         {/* Weather Card */}
         <div className="text-center">
           <div className="text-7xl mb-3">☀️</div>
